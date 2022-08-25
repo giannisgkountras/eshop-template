@@ -5,7 +5,7 @@ const data = {
       name: "Red Flower Dress",
       category: "Dresses",
       image: "/images/p1.jpg",
-      price: 20,
+      price: 30,
       countInStock: 7,
       brand: "Top g",
       rating: 2,
