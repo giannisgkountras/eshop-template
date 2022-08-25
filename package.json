@@ -1,0 +1,20 @@
+{
+  "name": "thrift-e-shop",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch backend --exec node --experimental-modules backend/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.22.0",
+    "eslint-plugin-react": "^7.31.0",
+    "nodemon": "^2.0.19"
+  }
+}
