@@ -80,6 +80,16 @@ export default function ProductScreen(props) {
                               ))}
                             </select>
                           </div>
+                          <div>Size</div>
+                          <div>
+                            <select>
+                              <option value="XS">XS</option>
+                              <option value="S">S</option>
+                              <option value="M">M</option>
+                              <option value="L">L</option>
+                              <option value="XL">XL</option>
+                            </select>
+                          </div>
                         </div>
                       </li>
                       <li>
