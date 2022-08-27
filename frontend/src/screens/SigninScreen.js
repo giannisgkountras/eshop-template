@@ -10,7 +10,7 @@ export default function SigninScreen() {
   const [password, setPassword] = useState("");
 
   const { search } = useLocation();
-  const redirect = search ? search.split("=")[1] : "/";
+  const redirect = search ? search.split("=")[1] : "";
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo, loading, error } = userSignin;
 
