@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useSearchParams, useNavigate } from "react-router-dom";
-import { addToCart, removeFromCart } from "../actions/cartActions";
+import { addToCart, clearCart, removeFromCart } from "../actions/cartActions";
 import MessageBox from "../components/MessageBox";
 
 export default function CartScreen() {
@@ -19,6 +19,9 @@ export default function CartScreen() {
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
+  };
+  const clearCartHandler = () => {
+    dispatch(clearCart());
   };
   let navigate = useNavigate();
   const checkoutHandler = () => {
@@ -68,10 +71,16 @@ export default function CartScreen() {
         <div className="card card-body">
           <ul>
             <li>
-              <h2>
-                Subtotal ({cartItems.reduce((total, thing) => total + thing.qty, 0)} items) : {cartItems.reduce((a, c) => a + c.price * c.qty, 0)} €
-              </h2>
+              <div className="row">
+                <h2>
+                  Subtotal ({cartItems.reduce((total, thing) => total + thing.qty, 0)} items) : {cartItems.reduce((a, c) => a + c.price * c.qty, 0)} €
+                </h2>
+                <button type="button" onClick={clearCartHandler} disabled={cartItems.length === 0}>
+                  Clear Cart
+                </button>
+              </div>
             </li>
+
             <li>
               <button type="button" onClick={checkoutHandler} className="primary block" disabled={cartItems.length === 0}>
                 Proceed to Checkout
