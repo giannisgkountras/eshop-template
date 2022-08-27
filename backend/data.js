@@ -1,7 +1,22 @@
+import bcrypt from "bcryptjs";
+
 const data = {
+  users: [
+    {
+      name: "Ankel",
+      email: "admin@example.com",
+      password: bcrypt.hashSync("1234", 8),
+      isAdmin: true,
+    },
+    {
+      name: "Paidi",
+      email: "paidi@example.com",
+      password: bcrypt.hashSync("1234", 8),
+      isAdmin: false,
+    },
+  ],
   products: [
     {
-      _id: "1",
       name: "Red Flower Dress",
       category: "Dresses",
       image: "/images/p1.jpg",
@@ -13,7 +28,6 @@ const data = {
       description: "Wonderfull red dress with white flowers.",
     },
     {
-      _id: "2",
       name: "Blue dress",
       category: "Dresses",
       image: "/images/p2.jpg",
@@ -25,7 +39,6 @@ const data = {
       description: "Pretty blue dress for parties",
     },
     {
-      _id: "3",
       name: "Denim Shorts",
       category: "Shorts",
       image: "/images/p3.jpg",
@@ -37,7 +50,6 @@ const data = {
       description: "Classic denim shorts for the summer",
     },
     {
-      _id: "4",
       name: "White Corset",
       category: "Corset",
       image: "/images/p4.jpg",
@@ -49,7 +61,6 @@ const data = {
       description: "Beautiful white corset for serius events",
     },
     {
-      _id: "5",
       name: "Denim Pants",
       category: "Pants",
       image: "/images/p5.jpg",
@@ -61,7 +72,6 @@ const data = {
       description: "Denim pants straight from the 80s",
     },
     {
-      _id: "6",
       name: "Flower Skirt",
       category: "Skirts",
       image: "/images/p6.jpg",
