@@ -152,6 +152,7 @@ a.brand {
 
 .col-2 {
   flex: 2 1 50rem;
+  padding: 1rem;
 }
 .min-30{
   min-width: 30rem;
@@ -241,7 +242,6 @@ img.large{
 } 
 .form label{
  margin: 1rem 0;
- display: block;
 }
 
 /*DROPDOWN*/

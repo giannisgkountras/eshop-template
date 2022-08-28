@@ -5,11 +5,13 @@ import { clearCart } from "./actions/cartActions";
 import { signout } from "./actions/userActions";
 import CartScreen from "./screens/CartScreen";
 import HomeScreen from "./screens/HomeScreen";
+import PaymentMethodScreen from "./screens/PaymentMethodScreen";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import ProductScreen from "./screens/ProductScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 import SigninScreen from "./screens/SigninScreen";
-
+// prettier-ignore
 function App() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -52,6 +54,8 @@ function App() {
         </header>
         <main>
           <Routes>
+            <Route path="/placeorder" element={<PlaceOrderScreen/>}/>
+            <Route path="/payment" element={<PaymentMethodScreen />} />
             <Route path="/cart/:id" element={<CartScreen />} />
             <Route path="/cart" element={<CartScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />
