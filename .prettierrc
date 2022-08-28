@@ -1,0 +1,6 @@
+{
+    "tabWidth": 4,
+    "useTabs": false,
+    "single-attribute-per-line": false,
+    "max_line_length": 80
+}

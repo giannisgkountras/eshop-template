@@ -1,18 +1,23 @@
 import express from "express";
-import data from "./data.js";
-const app = express();
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import productRouter from "./routers/productRouter.js";
+import userRouter from "./routers/userRouter.js";
 
-app.get("/api/products/:id", (req, res) => {
-  const product = data.products.find((x) => x._id === req.params.id); /*ANTI GIA req.params.id and balo '2' epistrefei proion 2*/
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: "Product not Found" });
-  }
+dotenv.config();
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// eslint-disable-next-line no-undef
+mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/eshop");
+
+app.use("/api/users", userRouter);
+app.use("/api/products", productRouter);
+
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
 });
-app.get("/api/products", (req, res) => {
-  res.send(data.products);
-});
+
 app.get("/", (req, res) => {
   res.send("Server is Ready");
 });
