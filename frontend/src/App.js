@@ -23,51 +23,66 @@ function App() {
     dispatch(clearCart());
   };
   return (
-    <BrowserRouter>
-      <div className="grid-container">
-        <header className="row">
-          <div>
-            <Link className="brand" to="/">
-              e-Thrift
-            </Link>
+      <BrowserRouter>
+          <div className="grid-container">
+              <header className="row">
+                  <div>
+                      <Link className="brand" to="/">
+                          e-Thrift
+                      </Link>
+                  </div>
+                  <div>
+                      <Link to="/cart">
+                          Cart
+                          
+                          {cartItems.length > 0 && (
+                              <span className="badge">{cartItems.length}</span>
+                          )}
+                      </Link>
+                      {userInfo ? (
+                          <div className="dropdown">
+                              <Link to="#">
+                                  {userInfo.name}{" "}
+                                  <i className="fa fa-caret-down"></i>
+                              </Link>
+                              <ul className="dropdown-content">
+                                  <Link to="/" onClick={signOutHandler}>
+                                      Sign Out
+                                  </Link>
+                              </ul>
+                          </div>
+                      ) : (
+                          <Link to="/signin">Sign In</Link>
+                      )}
+                  </div>
+              </header>
+              <main>
+                  <Routes>
+                      <Route
+                          path="/placeorder"
+                          element={<PlaceOrderScreen />}
+                      />
+                      <Route
+                          path="/payment"
+                          element={<PaymentMethodScreen />}
+                      />
+                      <Route path="/cart/:id" element={<CartScreen />} />
+                      <Route path="/cart" element={<CartScreen />} />
+                      <Route path="/product/:id" element={<ProductScreen />} />
+                      <Route path="/register" element={<RegisterScreen />} />
+                      <Route path="/signin" element={<SigninScreen />} />
+                      <Route
+                          path="/shipping"
+                          element={<ShippingAddressScreen />}
+                      />
+                      <Route path="/" element={<HomeScreen />} exact></Route>
+                  </Routes>
+              </main>
+              <footer className="row center">
+                  All rights reserved - ORANA
+              </footer>
           </div>
-          <div>
-            <Link to="/cart">
-              Cart
-              {cartItems.length > 0 && <span className="badge">{cartItems.length}</span>}
-            </Link>
-            {userInfo ? (
-              <div className="dropdown">
-                <Link to="#">
-                  {userInfo.name} <i className="fa fa-caret-down"></i>
-                </Link>
-                <ul className="dropdown-content">
-                  <Link to="/" onClick={signOutHandler}>
-                    Sign Out
-                  </Link>
-                </ul>
-              </div>
-            ) : (
-              <Link to="/signin">Sign In</Link>
-            )}
-          </div>
-        </header>
-        <main>
-          <Routes>
-            <Route path="/placeorder" element={<PlaceOrderScreen/>}/>
-            <Route path="/payment" element={<PaymentMethodScreen />} />
-            <Route path="/cart/:id" element={<CartScreen />} />
-            <Route path="/cart" element={<CartScreen />} />
-            <Route path="/product/:id" element={<ProductScreen />} />
-            <Route path="/register" element={<RegisterScreen />} />
-            <Route path="/signin" element={<SigninScreen />} />
-            <Route path="/shipping" element={<ShippingAddressScreen />} />
-            <Route path="/" element={<HomeScreen />} exact></Route>
-          </Routes>
-        </main>
-        <footer className="row center">All rights reserved - ORANA</footer>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
   );
 }
 

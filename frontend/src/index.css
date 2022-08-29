@@ -32,7 +32,7 @@ body {
 
 header {
   grid-area: header;
-  background-color: #274156;
+  background-color: #0B3C49;
 
 }
 
@@ -43,7 +43,7 @@ main {
 
 footer {
   grid-area: footer;
-  background-color: #274156;
+  background-color: #0B3C49;
   color: #ffffff
 }
 
@@ -58,16 +58,14 @@ h2 {
   padding: 1rem 0;
   color:#040404;
 }
-h2:hover{
-color: #757575
-}
+
 
 a {
   text-decoration: none;
 }
 
 a:hover {
-  color: #ff8000;
+  color: #a7aeac;
 }
 ul{
   padding: 0;
@@ -84,27 +82,65 @@ textarea,
 button{
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 0.1rem #a4a4a4 solid;
+  border: 0.1rem #dedddd solid;
   font-size: 1.6rem;
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; 
 }
+/*
 button{
   background-color: #f8f8f8;
     cursor: pointer;
-}
+}*/
 input:hover,
 select:hover,
 textarea:hover,
 button:hover{
-  border: 0.15rem #404040 solid;
+  border: 0.1rem #bbbbbb solid;
 }
 
 button.primary{
-  background-color: #f0c040;
+  background-color: #00acf0;
+  color: #ffffff;
+}
+button.primary:hover {
+  border: 0.1rem #ffffff00 solid;
+}
+button {
+  background-color: #ededed;
+  cursor: pointer;
+  color: #000000;
+  text-align: center;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
 }
 
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
 button.block{
   width: 100%;
 }
@@ -256,7 +292,7 @@ img.large{
   min-width: 12rem;
   padding: 1rem;
   z-index: 1;
-  background-color: #203040;
+  background-color: #0f5163;
   margin: 0;
   margin-top: 0.4rem;
   border-radius: 0.5rem;
@@ -276,6 +312,6 @@ display: block;
 }
 
 .checkout-steps>div.active {
-  border-top-color:  #f08000; 
+  border-top-color: #f08000; 
   color: #f08000;
 }

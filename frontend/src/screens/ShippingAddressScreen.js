@@ -102,8 +102,8 @@ export default function ShippingAddressScreen() {
                 </div>
                 <div>
                     <label />
-                    <button className="primary" type="submit">
-                        Continue
+                    <button className="primary button block" type="submit">
+                        <span>Continue</span>
                     </button>
                 </div>
             </form>

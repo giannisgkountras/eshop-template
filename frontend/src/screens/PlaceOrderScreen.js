@@ -140,10 +140,10 @@ export default function PlaceOrderScreen() {
                                 <button
                                     type="button"
                                     onClick={placeOrderHandler}
-                                    className="primary block"
+                                    className="primary button block"
                                     disabled={cart.cartItems.length === 0}
                                 >
-                                    Place Order
+                                    <span>Place Order</span>
                                 </button>
                             </li>
                         </div>

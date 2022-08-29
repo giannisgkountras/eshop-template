@@ -134,10 +134,10 @@ export default function CartScreen() {
                             <button
                                 type="button"
                                 onClick={checkoutHandler}
-                                className="primary block"
+                                className="primary button block"
                                 disabled={cartItems.length === 0}
                             >
-                                Proceed to Checkout
+                                <span>Proceed to Checkout</span>
                             </button>
                         </li>
                     </ul>
