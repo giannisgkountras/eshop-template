@@ -1,52 +1,60 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import { PayPalButton } from "react-paypal-button-v2";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-import { createOrder } from "../actions/orderActions";
-import CheckOutSteps from "../components/CheckOutSteps";
+import { Link, useParams } from "react-router-dom";
+import { detailsOrder } from "../actions/orderActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { ORDER_CREATE_RESET } from "../constants/orderConstants";
 
-export default function PlaceOrderScreen() {
-    const cart = useSelector((state) => state.cart);
-    const navigate = useNavigate();
+export default function OrderScreen() {
+    const params = useParams();
+    const orderId = params.id;
+    const orderDetails = useSelector((state) => state.orderDetails);
+    const { order, loading, error } = orderDetails;
     const dispatch = useDispatch();
-    var zero = 0;
-    var ten = 10;
-    useEffect(() => {
-        if (!cart.shippingAddress) {
-            navigate("/shipping");
-        }
-    }, [navigate, cart]);
 
-    const orderCreate = useSelector((state) => state.orderCreate);
-    const { loading, success, error, order } = orderCreate;
+    const [sdkReady, setSdkReady] = useState(false);
 
     useEffect(() => {
-        if (success) {
-            navigate(`/order/${order._id}`);
-            dispatch({ type: ORDER_CREATE_RESET });
+        const addPayPalScript = async () => {
+            const { data } = await axios.get("/api/config/paypal");
+            const script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+            script.async = true;
+            script.onload = () => {
+                setSdkReady(true);
+            };
+            document.body.appendChild(script);
+        };
+        if (!order) {
+            dispatch(detailsOrder(orderId));
+        } else {
+            if (!order.isPaid) {
+                if (!window.paypal) {
+                    addPayPalScript();
+                } else {
+                    setSdkReady(true);
+                }
+            }
         }
-    }, [success, order, dispatch, navigate]);
+    }, [dispatch, order, orderId, sdkReady]);
 
-    cart.itemsPrice = Number(
-        cart.cartItems.reduce((a, c) => a + c.qty * c.price, 0).toFixed(2)
-    );
+    const successPaymentHandler = () => {};
 
-    cart.shippingPrice = Number(
-        cart.itemsPrice > 50 ? zero.toFixed(2) : ten.toFixed(2)
-    );
-
-    cart.taxPrice = Number((0.24 * cart.itemsPrice).toFixed(2));
-
-    cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
-
-    const placeOrderHandler = () => {
-        dispatch(createOrder({ ...cart, orderItems: cart.cartItems }));
-    };
-    return (
+    return loading ? (
+        <LoadingBox></LoadingBox>
+    ) : error ? (
+        <MessageBox variant="danger">{error}</MessageBox>
+    ) : (
         <div>
-            <CheckOutSteps step1 step2 step3 step4></CheckOutSteps>
+            <h1>
+                Your order has been placed!
+                <br />
+                <br />
+                Order id: {order._id}
+            </h1>
             <div className="row top">
                 <div className="col-2">
                     <ul>
@@ -55,14 +63,23 @@ export default function PlaceOrderScreen() {
                                 <h2>Shipping</h2>
                                 <p>
                                     <strong>Name:</strong>{" "}
-                                    {cart.shippingAddress.fullName} <br />
+                                    {order.shippingAddress.fullName} <br />
                                     <br />
                                     <strong>Address:</strong>{" "}
-                                    {cart.shippingAddress.address},{" "}
-                                    {cart.shippingAddress.city},{" "}
-                                    {cart.shippingAddress.postalCode},{" "}
-                                    {cart.shippingAddress.country}
+                                    {order.shippingAddress.address},{" "}
+                                    {order.shippingAddress.city},{" "}
+                                    {order.shippingAddress.postalCode},{" "}
+                                    {order.shippingAddress.country}
                                 </p>
+                                {order.isDelivered ? (
+                                    <MessageBox varient="success">
+                                        Delivered at {order.deliveredAt}
+                                    </MessageBox>
+                                ) : (
+                                    <MessageBox varient="danger">
+                                        Not delivered
+                                    </MessageBox>
+                                )}
                             </div>
                         </li>
                         <li>
@@ -70,15 +87,24 @@ export default function PlaceOrderScreen() {
                                 <h2>Payment</h2>
                                 <p>
                                     <strong>Method selected:</strong>{" "}
-                                    {cart.paymentMethod}
+                                    {order.paymentMethod}
                                 </p>
+                                {order.isPaid ? (
+                                    <MessageBox varient="success">
+                                        Paid at {order.paidAt}
+                                    </MessageBox>
+                                ) : (
+                                    <MessageBox varient="danger">
+                                        Not paid
+                                    </MessageBox>
+                                )}
                             </div>
                         </li>
                         <li>
                             <div className="card card-body">
                                 <h2>Order items</h2>
                                 <ul>
-                                    {cart.cartItems.map((item) => (
+                                    {order.orderItems.map((item) => (
                                         <li key={item.product}>
                                             <div className="row">
                                                 <div>
@@ -117,7 +143,7 @@ export default function PlaceOrderScreen() {
                             <li>
                                 <div className="row">
                                     <div>Items:</div>
-                                    <div>{cart.itemsPrice.toFixed(2)}€</div>
+                                    <div>{order.itemsPrice.toFixed(2)}€</div>
                                 </div>
                             </li>
                             <li>
@@ -128,7 +154,7 @@ export default function PlaceOrderScreen() {
                                         <span>&#41;</span>:
                                     </div>
 
-                                    <div>{cart.shippingPrice.toFixed(2)}€</div>
+                                    <div>{order.shippingPrice.toFixed(2)}€</div>
                                 </div>
                             </li>
                             <li>
@@ -137,7 +163,7 @@ export default function PlaceOrderScreen() {
                                         Tax <span>&#40;</span>24%
                                         <span>&#41;</span>:
                                     </div>
-                                    <div>{cart.taxPrice.toFixed(2)}€</div>
+                                    <div>{order.taxPrice.toFixed(2)}€</div>
                                 </div>
                             </li>
                             <li>
@@ -147,26 +173,25 @@ export default function PlaceOrderScreen() {
                                     </div>
                                     <div>
                                         <strong>
-                                            {cart.totalPrice.toFixed(2)}€
+                                            {order.totalPrice.toFixed(2)}€
                                         </strong>
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <button
-                                    type="button"
-                                    onClick={placeOrderHandler}
-                                    className="primary button block"
-                                    disabled={cart.cartItems.length === 0}
-                                >
-                                    <span>Place Order</span>
-                                </button>
-                            </li>
-                            {loading && <LoadingBox></LoadingBox>}
-                            {error && (
-                                <MessageBox varient="danger">
-                                    {error}
-                                </MessageBox>
+                            {!order.isPaid && (
+                                <li>
+                                    {!sdkReady ? (
+                                        <LoadingBox></LoadingBox>
+                                    ) : (
+                                        <PayPalButton
+                                            amount={order.totalPrice}
+                                            onSuccess={successPaymentHandler}
+                                            onButtonReady={() => {
+                                                setSdkReady(true);
+                                            }}
+                                        ></PayPalButton>
+                                    )}
+                                </li>
                             )}
                         </div>
                     </ul>

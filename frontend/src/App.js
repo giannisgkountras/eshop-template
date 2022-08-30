@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { clearCart } from "./actions/cartActions";
 import { signout } from "./actions/userActions";
 import CartScreen from "./screens/CartScreen";
 import HomeScreen from "./screens/HomeScreen";
+import OrderScreen from "./screens/OrderScreen";
 import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import ProductScreen from "./screens/ProductScreen";
@@ -22,6 +23,12 @@ function App() {
     dispatch(signout());
     dispatch(clearCart());
   };
+
+  useEffect(() => {
+      window.process = {
+          ...window.process,
+      };
+  }, []);
   return (
       <BrowserRouter>
           <div className="grid-container">
@@ -58,6 +65,7 @@ function App() {
               </header>
               <main>
                   <Routes>
+                    <Route path="/order/:id" element={<OrderScreen/>}/>
                       <Route
                           path="/placeorder"
                           element={<PlaceOrderScreen />}

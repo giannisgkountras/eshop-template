@@ -10,6 +10,10 @@ import {
     userRegisterReducer,
     userSigninReducer,
 } from "./reducers/userReducers";
+import {
+    orderCreateReducer,
+    orderDetailsReducer,
+} from "./reducers/orderReducers";
 
 const initialState = {
     userSignin: {
@@ -27,12 +31,15 @@ const initialState = {
         paymentMethod: "PayPal",
     },
 };
+window.process = { ...window.process };
 const reducer = combineReducers({
     productList: productListReducer,
     productDetails: productDetailsReducer,
     cart: cartReducer,
     userSignin: userSigninReducer,
     userRegister: userRegisterReducer,
+    orderCreate: orderCreateReducer,
+    orderDetails: orderDetailsReducer,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
